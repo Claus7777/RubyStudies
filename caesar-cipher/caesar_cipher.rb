@@ -18,6 +18,7 @@ puts("Digite a palavra ou frase para ser encriptada:")
 variavel = gets.chomp()
 puts("Digite por quantas letras você quer que o shift seja:")
 shift = ""
+
 until shift.match(/[[:digit:]]/)
     shift = gets.chomp()
     unless shift.match(/[[:digit:]]/)
