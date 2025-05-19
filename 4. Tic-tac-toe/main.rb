@@ -45,25 +45,25 @@ end
 def print_final_board(board); end
 
 def process_play(jogador)
-  puts "É a sua vez - JOGADOR #{jogador.symbol}"
-  puts 'Escolha a coluna que você quer jogar (1 - 3)'
+  puts "It's your turn - #{jogador.symbol} PLAYER"
+  puts 'Choose the column (1 - 3)'
   coluna = Kernel.gets.match(/\d+/)[0]
   coluna = coluna.to_i
-  raise 'Exception: Numero invalido' if coluna < 1 || coluna > 3
+  raise 'Exception: Invalid number' if coluna < 1 || coluna > 3
 rescue Exception => e
   puts e
   retry
 else
   begin
-    puts 'Escolha a linha que você quer jogar (1 - 3)'
+    puts 'Choose the line (1 - 3)'
     linha = Kernel.gets.match(/\d+/)[0]
     linha = linha.to_i
-    raise 'Exception: Numero invalido' if linha < 1 || linha > 3
+    raise 'Exception: Invalid number' if linha < 1 || linha > 3
   rescue Exception => e
     puts e
     retry
   else
-    puts 'Computando jogada...'
+    puts 'Processing play...'
     [linha - 1, coluna - 1]
   end
 end
@@ -78,7 +78,7 @@ loop do
   active_player = players[turn_counter % 2]
   begin
     play = process_play(active_player)
-    raise 'Jogada Inválida! Vá de novo.' if tabuleiro[play[0]][play[1]] != ' '
+    raise 'Invalid play. Try again.' if tabuleiro[play[0]][play[1]] != ' '
   rescue Exception => e
     puts e
     retry
@@ -89,5 +89,5 @@ loop do
   break if check_game_state(tabuleiro) == true && turn_counter != 1
 end
 
-puts 'Fim de Jogo!'
+puts 'Game Over!'
 print_final_board(tabuleiro)
