@@ -1,0 +1,1 @@
+General repository for throwaway Ruby projects. Most folders here are very simple programs made with the intention to train a specific part of Ruby (OOP, writing Tests, messing with Gemfiles, etc) so the implementations aren't designed to scale. Projects sorted by complexity.
