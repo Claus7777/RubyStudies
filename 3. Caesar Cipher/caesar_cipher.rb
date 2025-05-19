@@ -14,14 +14,14 @@ def caesar_cipher(string, shift)
   result.join
 end
 
-puts('Digite a palavra ou frase para ser encriptada:')
+puts('Write the word or message you want to encrypt:')
 variavel = gets.chomp
-puts('Digite por quantas letras você quer que o shift seja:')
+puts('By how many letters do you want the cipher to shift?')
 shift = ''
 
 until shift.match(/[[:digit:]]/)
   shift = gets.chomp
-  puts('Isso não é um numero. Tente de novo') unless shift.match(/[[:digit:]]/)
+  puts('That\'s not a number, is it?') unless shift.match(/[[:digit:]]/)
 end
 
 puts(caesar_cipher(variavel, shift.to_i))
