@@ -5,7 +5,7 @@ require_relative 'Game'
 
 module SaveUtility
   def self.save_game(game)
-    JSON.dump({
+    save = JSON.dump({
                 chosen_word: game.chosen_word,
                 total_lives: game.total_lives,
                 right_letters: game.right_letters,
@@ -13,6 +13,7 @@ module SaveUtility
                 current_lives: game.current_lives,
                 turn_counter: game.turn_counter
               })
+    return save
   end
 
   def self.load_game(file)

@@ -18,21 +18,58 @@ def game_master
     puts "1 - NEW GAME"
     puts "2 - LOAD GAME"
 
-    selector = Kernel.gets.match(/\d+/)[0]
+    selector = gets.chomp
     selector = selector.to_i
-    raise "Invalid choice. Try again." if selector != 1 || selector != 2
+    raise "Invalid choice. Try again." if selector != 1 && selector != 2
     rescue StandardError => e
         puts e
         retry
     else
         if selector == 1
-            game = Game.new(7, [''], [''], 7, 0)
-            ##TODO: the rest of the game logic
+            game = Game.new
+            game.turn_counter = 1
+            game.hide_word()
+            game.print_guesses
+            game_loop(game)
         else
             #TODO: logic to select a file
             game = SaveUtility::load_game('placeholder')
+            game_loop(game)
         end
     end
-
-
+    puts("GAME OVER!")
 end
+
+def game_loop(game)
+    while game.end_game_flag == false
+        puts "## TURN " + game.turn_counter.to_s + " ##"
+        puts
+        puts "--LIVES LEFT " + game.current_lives.to_s + "--"
+
+        begin
+          puts "Guess a letter: "
+          letter = Kernel.gets.match(/[a-zA-Z]/)&.[](0)
+          raise "Invalid selection" if letter == nil
+        rescue StandardError => e
+            puts e
+            retry
+        else
+            try = game.check_letter(letter)
+          unless try == -1
+            game.print_guesses
+          else
+            puts
+            puts "WRONG GUESS"
+            puts "LIVES REMAINING: " + game.current_lives.to_s
+            game.print_guesses
+          end
+        end
+        
+        if !game.right_letters.include?("_") || game.current_lives <= 0
+            game.end_game_flag = true
+        end
+        game.turn_counter += 1
+    end
+end
+
+game_master

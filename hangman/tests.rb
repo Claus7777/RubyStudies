@@ -8,18 +8,18 @@ include SaveUtility
 
 describe Game do
   it 'create new game' do
-    game = Game.new(7, [''], [''], 7, 0)
+    game = Game.new
     expect(game.chosen_word).not_to eq('')
   end
 
   it 'create new game with preselected word' do
-    game = Game.new('test', 7, [''], [''], 7, 0)
-    expect(game.chosen_word).to eq('test')
+    game = Game.new('test')
+    expect(game.chosen_word).to eq('TEST')
   end
 
   it 'save game' do
-    game = Game.new(7, [''], [''], 7, 0)
-    preselected_game = Game.new('test', 7, [''], [''], 7, 0)
+    game = Game.new
+    preselected_game = Game.new('test')
     saved_game = JSON.parse(SaveUtility.save_game(game))
     saved_presel_game = JSON.parse(SaveUtility.save_game(preselected_game))
     expect(saved_game['chosen_word']).not_to be_empty
@@ -30,7 +30,7 @@ describe Game do
       'current_lives' => 7,
       'turn_counter' => 0
     )
-    expect(saved_presel_game['chosen_word']).to eq('test')
+    expect(saved_presel_game['chosen_word']).to eq('TEST')
     expect(saved_presel_game).to include(
         'total_lives' => 7,
         'right_letters' => [''],
@@ -42,7 +42,7 @@ describe Game do
   end
 
   it 'load game and save it again' do
-    game = Game.new(7, [''], [''], 7, 0)
+    game = Game.new
     game_word = game.chosen_word
     saved_game = SaveUtility.save_game(game)
     loaded_game = SaveUtility.load_game(saved_game)
@@ -69,15 +69,30 @@ describe Game do
   end
 
   it 'load dictionary with fixed seed' do
-    game = Game.new(7, [''], [''], 7, 0)
+    game = Game.new
     game.choose_word('C:\Users\pocar\Documents\Ruby\hangman\google-10000-english-usa.txt', 420)
     expect(game.chosen_word).to eq('roger')
   end
 
   it 'load dictionary with random seed' do
-    game = Game.new(7, [''], [''], 7, 0)
+    game = Game.new
     game.choose_word('C:\Users\pocar\Documents\Ruby\hangman\google-10000-english-usa.txt')
     expect(game.chosen_word).not_to eq('')
   end
+
+  it 'hide words' do
+    game = Game.new("test")
+    expect(game.hide_word()).to eq(["_","_","_","_"])
+  end
+
+  it 'guess letter' do
+    game = Game.new("roger")
+    game2 = Game.new("InConsTitucIonaLissimaMente")
+    game2.right_letters = game2.hide_word()
+    game.right_letters = game.hide_word()
+    expect(game.check_letter('o')).to eq(["_","O","_","_","_"])
+    expect(game2.check_letter('e')).to eq(["_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","E","_","E"])
+  end
+
 
 end
