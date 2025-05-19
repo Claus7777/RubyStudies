@@ -13,63 +13,61 @@ include SaveUtility
 ## Pegar essa letra, verificar se ela está na palavra. Se sim, mostrar a letra na palavra. Se não, botar no array de letras apostadas e tirar uma vida.
 
 def game_master
-    begin
-    puts "Welcome to Hangman! Would you like start a new game or load a saved game?"
-    puts "1 - NEW GAME"
-    puts "2 - LOAD GAME"
+  begin
+    puts 'Welcome to Hangman! Would you like start a new game or load a saved game?'
+    puts '1 - NEW GAME'
+    puts '2 - LOAD GAME'
 
     selector = gets.chomp
     selector = selector.to_i
-    raise "Invalid choice. Try again." if selector != 1 && selector != 2
-    rescue StandardError => e
-        puts e
-        retry
+    raise 'Invalid choice. Try again.' if selector != 1 && selector != 2
+  rescue StandardError => e
+    puts e
+    retry
+  else
+    if selector == 1
+      game = Game.new
+      game.turn_counter = 1
+      game.hide_word
+      game.print_guesses
+      game_loop(game)
     else
-        if selector == 1
-            game = Game.new
-            game.turn_counter = 1
-            game.hide_word()
-            game.print_guesses
-            game_loop(game)
-        else
-            #TODO: logic to select a file
-            game = SaveUtility::load_game('placeholder')
-            game_loop(game)
-        end
+      # TODO: logic to select a file
+      game = SaveUtility.load_game('placeholder')
+      game_loop(game)
     end
-    puts("GAME OVER!")
+  end
+  puts('GAME OVER!')
 end
 
 def game_loop(game)
-    while game.end_game_flag == false
-        puts "## TURN " + game.turn_counter.to_s + " ##"
-        puts
-        puts "--LIVES LEFT " + game.current_lives.to_s + "--"
+  while game.end_game_flag == false
+    puts '## TURN ' + game.turn_counter.to_s + ' ##'
+    puts
+    puts '--LIVES LEFT ' + game.current_lives.to_s + '--'
 
-        begin
-          puts "Guess a letter: "
-          letter = Kernel.gets.match(/[a-zA-Z]/)&.[](0)
-          raise "Invalid selection" if letter == nil
-        rescue StandardError => e
-            puts e
-            retry
-        else
-            try = game.check_letter(letter)
-          unless try == -1
-            game.print_guesses
-          else
-            puts
-            puts "WRONG GUESS"
-            puts "LIVES REMAINING: " + game.current_lives.to_s
-            game.print_guesses
-          end
-        end
-        
-        if !game.right_letters.include?("_") || game.current_lives <= 0
-            game.end_game_flag = true
-        end
-        game.turn_counter += 1
+    begin
+      puts 'Guess a letter: '
+      letter = Kernel.gets.match(/[a-zA-Z]/)&.[](0)
+      raise 'Invalid selection' if letter.nil?
+    rescue StandardError => e
+      puts e
+      retry
+    else
+      try = game.check_letter(letter)
+      if try == -1
+        puts
+        puts 'WRONG GUESS'
+        puts 'LIVES REMAINING: ' + game.current_lives.to_s
+        game.print_guesses
+      else
+        game.print_guesses
+      end
     end
+
+    game.end_game_flag = true if !game.right_letters.include?('_') || game.current_lives <= 0
+    game.turn_counter += 1
+  end
 end
 
 game_master

@@ -32,13 +32,12 @@ describe Game do
     )
     expect(saved_presel_game['chosen_word']).to eq('TEST')
     expect(saved_presel_game).to include(
-        'total_lives' => 7,
-        'right_letters' => [''],
-        'wrong_letters' => [''],
-        'current_lives' => 7,
-        'turn_counter' => 0
+      'total_lives' => 7,
+      'right_letters' => [''],
+      'wrong_letters' => [''],
+      'current_lives' => 7,
+      'turn_counter' => 0
     )
-
   end
 
   it 'load game and save it again' do
@@ -48,8 +47,8 @@ describe Game do
     loaded_game = SaveUtility.load_game(saved_game)
     saved_game = JSON.parse(SaveUtility.save_game(loaded_game))
     expect(saved_game['chosen_word']).to eq(game_word)
-    expect(saved_game).to include( 'total_lives' => 7,
-                               'right_letters' => [''], 'wrong_letters' => [''], 'current_lives' => 7, 'turn_counter' => 0 )
+    expect(saved_game).to include('total_lives' => 7,
+                                  'right_letters' => [''], 'wrong_letters' => [''], 'current_lives' => 7, 'turn_counter' => 0)
   end
 
   it 'load game error' do
@@ -81,18 +80,17 @@ describe Game do
   end
 
   it 'hide words' do
-    game = Game.new("test")
-    expect(game.hide_word()).to eq(["_","_","_","_"])
+    game = Game.new('test')
+    expect(game.hide_word).to eq(%w[_ _ _ _])
   end
 
   it 'guess letter' do
-    game = Game.new("roger")
-    game2 = Game.new("InConsTitucIonaLissimaMente")
-    game2.right_letters = game2.hide_word()
-    game.right_letters = game.hide_word()
-    expect(game.check_letter('o')).to eq(["_","O","_","_","_"])
-    expect(game2.check_letter('e')).to eq(["_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","E","_","E"])
+    game = Game.new('roger')
+    game2 = Game.new('InConsTitucIonaLissimaMente')
+    game2.right_letters = game2.hide_word
+    game.right_letters = game.hide_word
+    expect(game.check_letter('o')).to eq(%w[_ O _ _ _])
+    expect(game2.check_letter('e')).to eq(%w[_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+                                             _ _ _ E _ E])
   end
-
-
 end
