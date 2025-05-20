@@ -36,6 +36,7 @@ def game_master
       # TODO: logic to select a file
       file_picker = FilePicker.new('.')
       saved_game = file_picker.pick_file
+      saved_game = SaveUtility::load_game(saved_game)
       game_loop(saved_game)
     end
   end

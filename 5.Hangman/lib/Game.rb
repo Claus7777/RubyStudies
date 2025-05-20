@@ -10,7 +10,7 @@ class Game
   DICTIONARY = File.expand_path('../google-10000-english-usa.txt', __dir__)
 
   def initialize(chosen_word = '', total_lives = MAX_LIFE, right_letters = [''], wrong_letters = [],
-                 current_lives = MAX_LIFE, turn_counter = 0)
+                 current_lives = MAX_LIFE, turn_counter = 0, end_game_flag)
     if chosen_word == ''
       chosen_word = choose_word(DICTIONARY)
       @chosen_word = chosen_word.upcase
