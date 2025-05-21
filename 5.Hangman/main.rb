@@ -33,10 +33,9 @@ def game_master
       game.print_guesses
       game_loop(game)
     else
-      # TODO: logic to select a file
       file_picker = FilePicker.new('.')
       saved_game = file_picker.pick_file
-      saved_game = SaveUtility::load_game(saved_game)
+      saved_game = SaveUtility.load_game(saved_game)
       game_loop(saved_game)
     end
   end
@@ -45,9 +44,9 @@ end
 
 def game_loop(game)
   while game.end_game_flag == false
-    puts '## TURN ' + game.turn_counter.to_s + ' ##'
+    puts "## TURN #{game.turn_counter} ##"
     puts
-    puts '--LIVES LEFT ' + game.current_lives.to_s + '--'
+    puts "--LIVES LEFT #{game.current_lives}--"
 
     begin
       puts 'Guess a letter or type 1 to Save and Exit: '
@@ -59,24 +58,22 @@ def game_loop(game)
     else
       if letter == '1'
         game.end_game_flag = true
-        File.write('save.json', SaveUtility::save_game(game))
-        puts "Progress saved. Exiting game."
+        File.write('save.json', SaveUtility.save_game(game))
+        puts 'Progress saved. Exiting game.'
         return
       else
         try = game.check_letter(letter)
         if try == -1
           puts
           puts 'WRONG GUESS'
-          puts 'LIVES REMAINING: ' + game.current_lives.to_s
-          game.print_guesses
-        else
-          game.print_guesses
+          puts "LIVES REMAINING: #{game.current_lives}"
         end
+        game.print_guesses
       end
-    game.end_game_flag = true if !game.right_letters.include?('_') || game.current_lives <= 0
-    game.turn_counter += 1
+      game.end_game_flag = true if !game.right_letters.include?('_') || game.current_lives <= 0
+      game.turn_counter += 1
     end
-end
+  end
 end
 
 game_master

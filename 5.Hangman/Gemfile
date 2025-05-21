@@ -5,3 +5,5 @@ source 'https://rubygems.org'
 # gem "rails"
 
 gem 'rubocop', '~> 1.75'
+
+gem "terminal-file-picker", "~> 0.0.5"

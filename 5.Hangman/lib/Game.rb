@@ -11,12 +11,8 @@ class Game
 
   def initialize(chosen_word = '', total_lives = MAX_LIFE, right_letters = [''], wrong_letters = [],
                  current_lives = MAX_LIFE, turn_counter = 0)
-    if chosen_word == ''
-      chosen_word = choose_word(DICTIONARY)
-      @chosen_word = chosen_word.upcase
-    else
-      @chosen_word = chosen_word.upcase
-    end
+    chosen_word = choose_word(DICTIONARY) if chosen_word == ''
+    @chosen_word = chosen_word.upcase
     @total_lives = total_lives
     @right_letters = right_letters.map(&:upcase)
     @wrong_letters = wrong_letters.map(&:upcase)
@@ -48,7 +44,7 @@ class Game
   end
 
   def choose_word(dictionary, seed = 0)
-    word_seed = if seed == 0
+    word_seed = if seed.zero?
                   Random.new
                 else
                   Random.new(seed)
@@ -69,9 +65,9 @@ class Game
 
   def print_guesses
     puts
-    puts 'WORD: ' + right_letters.to_s
+    puts "WORD: #{right_letters}"
     return unless wrong_letters.length >= 1
 
-    puts 'WRONG GUESSES: ' + wrong_letters.to_s
+    puts "WRONG GUESSES: #{wrong_letters}"
   end
 end
